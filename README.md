@@ -1,4 +1,4 @@
-# astrologer-api-ts
+# kerykeion-ts
 
 TypeScript port of `Astrologer-API` and `kerykeion`, with two primary entry points:
 
@@ -84,7 +84,7 @@ import {
   AstrologicalSubjectFactory,
   ChartDataFactory,
   ReportGenerator,
-} from "astrologer-api-ts";
+} from "kerykeion-ts";
 
 const subject = await AstrologicalSubjectFactory.fromBirthData({
   name: "Ada Lovelace",
@@ -119,7 +119,7 @@ import {
   AstrologicalSubjectFactory,
   ChartDataFactory,
   ChartDrawer,
-} from "astrologer-api-ts";
+} from "kerykeion-ts";
 
 const subject = await AstrologicalSubjectFactory.fromBirthData({
   name: "Alan Turing",
@@ -156,7 +156,7 @@ await Bun.write("./alan-turing-chart.svg", svg);
 ### Embed the API app in another Bun service
 
 ```ts
-import { createApp } from "astrologer-api-ts";
+import { createApp } from "kerykeion-ts";
 
 const app = createApp();
 
@@ -175,7 +175,7 @@ The published package embeds the Swiss Ephemeris WASM/data bundle into a single 
 - Node/Bun-only features such as writing SVG files or shelling out to `scour` stay behind runtime checks
 
 ```ts
-import { AstrologicalSubjectFactory } from "astrologer-api-ts";
+import { AstrologicalSubjectFactory } from "kerykeion-ts";
 
 const subject = await AstrologicalSubjectFactory.fromBirthData({
   name: "Browser Example",

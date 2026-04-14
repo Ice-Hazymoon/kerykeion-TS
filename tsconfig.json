@@ -31,7 +31,8 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "scripts/**/*.ts",
-    "tests/**/*.ts"
+    "tests/**/*.ts",
+    "vitest.config.ts"
   ],
   "exclude": [
     "dist",

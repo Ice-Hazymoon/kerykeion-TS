@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "astrologer-api-ts",
+      "name": "kerykeion-ts",
       "dependencies": {
         "@js-temporal/polyfill": "^0.5.1",
         "hono": "^4.12.12",
