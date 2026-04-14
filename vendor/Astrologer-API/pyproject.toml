@@ -1,0 +1,62 @@
+[project]
+name = "astrologer-api"
+version = "5.0.0"
+description = "Astrologer API: FastAPI service for astrology charts and data"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic",
+    "pydantic-settings",
+    "starlette",
+    "fastapi",
+    "uvicorn",
+    "types-pytz",
+    "pytz",
+    "scour",
+    "typing-extensions",
+    "pyjwt>=2.10.1",
+    "kerykeion==5.12.7",
+]
+
+[dependency-groups]
+dev = [
+    "black",
+    "pytest",
+    "pytest-cov",
+    "mypy",
+    "httpx",
+    "types-requests",
+    "poethepoet",
+]
+
+[tool.poe.tasks]
+dev = "env ENV_TYPE=dev uvicorn app.main:app --reload --log-level debug"
+test = "pytest -v"
+test-verbose = "pytest -vv"
+quality = "python -m mypy --ignore-missing-imports ."
+schema = "python dump_schema.py"
+format = "black . --line-length 200"
+test-cov = "pytest --cov=app --cov-report=term-missing"
+test-cov-xml = "pytest --cov=app --cov-report=xml:coverage.xml"
+test-cov-html = "pytest --cov=app --cov-report=html:coverage_html"
+update-baselines = "pytest tests/test_baselines.py --update-baselines -v"
+
+[tool.coverage.run]
+branch = true
+source = ["app"]
+omit = [
+  "app/tmp/*",
+  "site-docs/*",
+  "tests/*",
+  ".venv/*",
+  "app/config/settings.py",
+  "app/middleware/*",
+  "app/utils/get_time_from_google.py",
+  "app/main.py",
+  "app/types/request_models.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+fail_under = 95

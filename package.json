@@ -1,0 +1,86 @@
+{
+  "name": "astrologer-api-ts",
+  "type": "module",
+  "version": "5.12.7-ts.0",
+  "packageManager": "bun@1.3.11",
+  "description": "Bun-first TypeScript port of Astrologer-API and kerykeion with source-built Swiss Ephemeris WASM.",
+  "license": "AGPL-3.0-only",
+  "keywords": [
+    "astrology",
+    "astrologer-api",
+    "bun",
+    "hono",
+    "kerykeion",
+    "serverless",
+    "svg",
+    "swisseph",
+    "wasm"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "assets/sweph",
+    "claude.md",
+    "dist"
+  ],
+  "engines": {
+    "bun": ">=1.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rm -rf dist .tmp .tmp-report-compare build patches tmp-*.svg",
+    "build:chart-assets": "bun run scripts/generate-chart-assets.mjs",
+    "build:sweph-constants": "bun run scripts/generate-sweph-constants.mjs",
+    "build:sweph-wasm": "./scripts/build-sweph-wasm.sh",
+    "build:dist": "tsc -p tsconfig.build.json",
+    "build:dist-assets": "bun run scripts/copy-dist-assets.mjs",
+    "build": "bun run clean && bun run build:chart-assets && bun run build:sweph-constants && bun run build:sweph-wasm && bun run build:dist && bun run build:dist-assets",
+    "browser:check": "bun build ./src/index.ts --target browser --outdir .tmp/browser-build",
+    "check:unused": "knip --include files,dependencies --no-progress",
+    "dev": "bun run src/server.ts",
+    "demo:web": "bun run scripts/start-browser-demo.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "refresh:api-baselines": "bun run scripts/refresh-api-baselines.mjs",
+    "refresh:report-fixtures": "bun run scripts/refresh-report-fixtures.mjs",
+    "sync:vendors": "bun run scripts/sync-vendors.mjs",
+    "start": "bun run src/server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "verify": "bun run lint && bun run typecheck && bun run check:unused && bun run browser:check",
+    "verify:full": "bun run verify && bun run test",
+    "prepublishOnly": "bun run build && bun run verify"
+  },
+  "dependencies": {
+    "@js-temporal/polyfill": "^0.5.1",
+    "hono": "^4.12.12",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^8.2.0",
+    "@types/bun": "latest",
+    "@types/node": "^25.6.0",
+    "@vitest/coverage-v8": "^4.1.4",
+    "eslint": "^10.2.0",
+    "knip": "^6.4.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.4"
+  }
+}

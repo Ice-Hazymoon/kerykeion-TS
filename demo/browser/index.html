@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Astrologer API TS Browser Demo</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #111827;
+        color: #f3f4f6;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), transparent 28%),
+          radial-gradient(circle at top right, rgba(16, 185, 129, 0.12), transparent 24%),
+          #111827;
+      }
+
+      main {
+        width: min(1400px, 100%);
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      .hero {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .hero p {
+        max-width: 72ch;
+        color: #cbd5e1;
+        line-height: 1.5;
+      }
+
+      .layout {
+        display: grid;
+        gap: 20px;
+      }
+
+      @media (min-width: 1100px) {
+        .layout {
+          grid-template-columns: 360px minmax(0, 1fr);
+          align-items: start;
+        }
+      }
+
+      .panel {
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        border-radius: 8px;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(14px);
+      }
+
+      .controls {
+        padding: 16px;
+        display: grid;
+        gap: 14px;
+      }
+
+      form {
+        display: grid;
+        gap: 12px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid .full {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 13px;
+        color: #cbd5e1;
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        border-radius: 6px;
+        background: rgba(15, 23, 42, 0.9);
+        color: #f8fafc;
+        padding: 10px 12px;
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+        border-radius: 6px;
+        padding: 11px 14px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        color: #0f172a;
+        background: linear-gradient(135deg, #fbbf24, #34d399);
+      }
+
+      button:disabled {
+        cursor: wait;
+        opacity: 0.75;
+      }
+
+      .status {
+        min-height: 22px;
+        font-size: 13px;
+        color: #93c5fd;
+      }
+
+      .status.error {
+        color: #fca5a5;
+      }
+
+      .results {
+        display: grid;
+        gap: 20px;
+      }
+
+      .summary {
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .summary-grid {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+
+      .metric {
+        border: 1px solid rgba(148, 163, 184, 0.14);
+        border-radius: 6px;
+        background: rgba(2, 6, 23, 0.45);
+        padding: 12px;
+        display: grid;
+        gap: 4px;
+      }
+
+      .metric span {
+        font-size: 12px;
+        color: #94a3b8;
+      }
+
+      .metric strong {
+        font-size: 15px;
+      }
+
+      .chart-shell {
+        overflow: auto;
+        padding: 12px;
+      }
+
+      #chart {
+        min-height: 640px;
+      }
+
+      #chart svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .report {
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      pre {
+        margin: 0;
+        padding: 14px;
+        border-radius: 6px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        background: rgba(2, 6, 23, 0.65);
+        color: #e2e8f0;
+        overflow: auto;
+        white-space: pre-wrap;
+        line-height: 1.35;
+        font-size: 12px;
+      }
+
+      .footnote {
+        font-size: 12px;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <h1>Astrologer API TS Browser Demo</h1>
+        <p>
+          This page imports the browser bundle directly, computes a natal chart in the client,
+          renders the SVG chart in the browser, and shows a text report. No Python runtime is used.
+        </p>
+      </section>
+
+      <section class="layout">
+        <aside class="panel controls">
+          <form id="birth-form">
+            <div class="grid">
+              <label class="full">
+                <span>Name</span>
+                <input id="name" name="name" value="Browser Demo" required>
+              </label>
+
+              <label>
+                <span>Year</span>
+                <input id="year" name="year" type="number" value="1990" required>
+              </label>
+
+              <label>
+                <span>Month</span>
+                <input id="month" name="month" type="number" min="1" max="12" value="6" required>
+              </label>
+
+              <label>
+                <span>Day</span>
+                <input id="day" name="day" type="number" min="1" max="31" value="15" required>
+              </label>
+
+              <label>
+                <span>Hour</span>
+                <input id="hour" name="hour" type="number" min="0" max="23" value="14" required>
+              </label>
+
+              <label>
+                <span>Minute</span>
+                <input id="minute" name="minute" type="number" min="0" max="59" value="30" required>
+              </label>
+
+              <label class="full">
+                <span>City</span>
+                <input id="city" name="city" value="Rome" required>
+              </label>
+
+              <label>
+                <span>Nation</span>
+                <input id="nation" name="nation" value="IT" required>
+              </label>
+
+              <label class="full">
+                <span>Timezone</span>
+                <input id="tz_str" name="tz_str" value="Europe/Rome" required>
+              </label>
+
+              <label>
+                <span>Longitude</span>
+                <input id="lng" name="lng" type="number" step="0.0001" value="12.4964" required>
+              </label>
+
+              <label>
+                <span>Latitude</span>
+                <input id="lat" name="lat" type="number" step="0.0001" value="41.9028" required>
+              </label>
+            </div>
+
+            <button id="generate" type="submit">Generate In Browser</button>
+            <div id="status" class="status" aria-live="polite"></div>
+          </form>
+
+          <p class="footnote">
+            Tip: keep <code>online: false</code> and provide coordinates/timezone directly to stay fully offline and browser-safe.
+          </p>
+        </aside>
+
+        <section class="results">
+          <div class="panel summary">
+            <h2>Computation Summary</h2>
+            <div id="summary" class="summary-grid"></div>
+          </div>
+
+          <div class="panel chart-shell">
+            <div id="chart"></div>
+          </div>
+
+          <div class="panel report">
+            <h2>Text Report</h2>
+            <pre id="report">Waiting for the first chart…</pre>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="/client.js"></script>
+  </body>
+</html>

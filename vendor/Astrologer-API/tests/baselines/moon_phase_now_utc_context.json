@@ -1,0 +1,112 @@
+{
+  "status": "OK",
+  "context": "<moon_phase_overview timestamp=\"1717245000\" datestamp=\"Sat, 01 Jun 2024 12:30:00 +0000\">\n  <moon>\n    <phase>0.816</phase>\n    <phase_name>Waning Crescent</phase_name>\n    <major_phase>Last Quarter</major_phase>\n    <stage>waning</stage>\n    <illumination>30%</illumination>\n    <age_days>9</age_days>\n    <lunar_cycle>81.627%</lunar_cycle>\n    <emoji>🌘</emoji>\n    <zodiac sun_sign=\"Gem\" moon_sign=\"Ari\" />\n    <next_lunar_eclipse timestamp=\"1726627457\" datestamp=\"Wed, 18 Sep 2024 02:44:17 +0000\" type=\"Partial Lunar Eclipse\" />\n    <detailed>\n      <upcoming_phases>\n        <new_moon>\n          <last timestamp=\"1716472388\" datestamp=\"Thu, 23 May 2024 13:53:08 +0000\" days_ago=\"9\" />\n          <next timestamp=\"1717677464\" datestamp=\"Thu, 06 Jun 2024 12:37:44 +0000\" days_ahead=\"5\" />\n        </new_moon>\n        <first_quarter>\n          <last timestamp=\"1717089160\" datestamp=\"Thu, 30 May 2024 17:12:40 +0000\" days_ago=\"2\" />\n          <next timestamp=\"1718342307\" datestamp=\"Fri, 14 Jun 2024 05:18:27 +0000\" days_ahead=\"13\" />\n        </first_quarter>\n        <full_moon>\n          <last timestamp=\"1715138516\" datestamp=\"Wed, 08 May 2024 03:21:56 +0000\" days_ago=\"24\" />\n          <next timestamp=\"1719018472\" datestamp=\"Sat, 22 Jun 2024 01:07:52 +0000\" days_ahead=\"21\" />\n        </full_moon>\n        <last_quarter>\n          <last timestamp=\"1715773680\" datestamp=\"Wed, 15 May 2024 11:48:00 +0000\" days_ago=\"17\" />\n          <next timestamp=\"1719611605\" datestamp=\"Fri, 28 Jun 2024 21:53:25 +0000\" days_ahead=\"27\" />\n        </last_quarter>\n      </upcoming_phases>\n      <illumination_details percentage=\"30.0\" visible_fraction=\"0.2978\" phase_angle=\"293.86\" />\n    </detailed>\n  </moon>\n  <sun>\n    <sunrise>1717213706</sunrise>\n    <sunrise_timestamp>03:48</sunrise_timestamp>\n    <sunset>1717272482</sunset>\n    <sunset_timestamp>20:08</sunset_timestamp>\n    <solar_noon>11:58</solar_noon>\n    <day_length>16:20</day_length>\n    <position altitude=\"60.03\" azimuth=\"194.99\" distance=\"151708226.38\" />\n    <next_solar_eclipse timestamp=\"1727894704\" datestamp=\"Wed, 02 Oct 2024 18:45:04 +0000\" type=\"Annular Solar Eclipse\" />\n  </sun>\n  <location latitude=\"51.477928\" longitude=\"-0.001545\" precision=\"0\" using_default_location=\"true\" />\n</moon_phase_overview>",
+  "moon_phase_overview": {
+    "timestamp": 1717245000,
+    "datestamp": "Sat, 01 Jun 2024 12:30:00 +0000",
+    "sun": {
+      "sunrise": 1717213706,
+      "sunrise_timestamp": "03:48",
+      "sunset": 1717272482,
+      "sunset_timestamp": "20:08",
+      "solar_noon": "11:58",
+      "day_length": "16:20",
+      "position": {
+        "altitude": 60.02967884339111,
+        "azimuth": 194.98776846766464,
+        "distance": 151708226.38401103
+      },
+      "next_solar_eclipse": {
+        "timestamp": 1727894704,
+        "datestamp": "Wed, 02 Oct 2024 18:45:04 +0000",
+        "type": "Annular Solar Eclipse",
+        "visibility_regions": null
+      }
+    },
+    "moon": {
+      "phase": 0.816266994468398,
+      "phase_name": "Waning Crescent",
+      "major_phase": "Last Quarter",
+      "stage": "waning",
+      "illumination": "30%",
+      "age_days": 9,
+      "lunar_cycle": "81.627%",
+      "emoji": "🌘",
+      "zodiac": {
+        "sun_sign": "Gem",
+        "moon_sign": "Ari"
+      },
+      "next_lunar_eclipse": {
+        "timestamp": 1726627457,
+        "datestamp": "Wed, 18 Sep 2024 02:44:17 +0000",
+        "type": "Partial Lunar Eclipse",
+        "visibility_regions": null
+      },
+      "detailed": {
+        "position": null,
+        "visibility": null,
+        "upcoming_phases": {
+          "new_moon": {
+            "last": {
+              "timestamp": 1716472388,
+              "datestamp": "Thu, 23 May 2024 13:53:08 +0000",
+              "days_ago": 9
+            },
+            "next": {
+              "timestamp": 1717677464,
+              "datestamp": "Thu, 06 Jun 2024 12:37:44 +0000",
+              "days_ahead": 5
+            }
+          },
+          "first_quarter": {
+            "last": {
+              "timestamp": 1717089160,
+              "datestamp": "Thu, 30 May 2024 17:12:40 +0000",
+              "days_ago": 2
+            },
+            "next": {
+              "timestamp": 1718342307,
+              "datestamp": "Fri, 14 Jun 2024 05:18:27 +0000",
+              "days_ahead": 13
+            }
+          },
+          "full_moon": {
+            "last": {
+              "timestamp": 1715138516,
+              "datestamp": "Wed, 08 May 2024 03:21:56 +0000",
+              "days_ago": 24
+            },
+            "next": {
+              "timestamp": 1719018472,
+              "datestamp": "Sat, 22 Jun 2024 01:07:52 +0000",
+              "days_ahead": 21
+            }
+          },
+          "last_quarter": {
+            "last": {
+              "timestamp": 1715773680,
+              "datestamp": "Wed, 15 May 2024 11:48:00 +0000",
+              "days_ago": 17
+            },
+            "next": {
+              "timestamp": 1719611605,
+              "datestamp": "Fri, 28 Jun 2024 21:53:25 +0000",
+              "days_ahead": 27
+            }
+          }
+        },
+        "illumination_details": {
+          "percentage": 30,
+          "visible_fraction": 0.29777937278908506,
+          "phase_angle": 293.8561180086233
+        }
+      }
+    },
+    "location": {
+      "latitude": "51",
+      "longitude": "0",
+      "precision": 0,
+      "using_default_location": true
+    }
+  }
+}

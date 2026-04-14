@@ -1,0 +1,6 @@
+{
+  "ignore": [
+    "demo/browser/client.js",
+    "vendor/**"
+  ]
+}

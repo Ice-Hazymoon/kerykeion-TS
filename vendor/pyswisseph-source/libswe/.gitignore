@@ -1,0 +1,9 @@
+# swisseph .gitignore
+
+*.a
+*.o
+*.so
+
+/build*
+/swetest
+

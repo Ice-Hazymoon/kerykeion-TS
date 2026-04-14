@@ -1,0 +1,45 @@
+# dependencies
+node_modules/
+
+# package / build output
+dist/
+out/
+*.tgz
+
+# code coverage
+coverage/
+*.lcov
+
+# logs
+logs/
+*.log
+report.[0-9]_[0-9]_[0-9]_[0-9]_.json
+
+# environment files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# caches and local tooling state
+.eslintcache
+.cache/
+*.tsbuildinfo
+cache/
+.tmp/
+.tmp-report-compare/
+.venv-pyref/
+.cursor/
+tmp-*.svg
+
+# vendored upstream repos should be committed, but not their nested VCS/editor state
+vendor/**/.git
+vendor/**/.github/cache
+vendor/**/.vscode
+vendor/**/__pycache__/
+vendor/**/*.pyc
+
+# editors / OS files
+.idea/
+.DS_Store
