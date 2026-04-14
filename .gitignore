@@ -28,10 +28,13 @@ report.[0-9]_[0-9]_[0-9]_[0-9]_.json
 *.tsbuildinfo
 cache/
 .tmp/
+.tmp-*/
 .tmp-report-compare/
 .venv-pyref/
 .cursor/
 tmp-*.svg
+a.out.js
+a.out.wasm
 
 # vendored upstream repos should be committed, but not their nested VCS/editor state
 vendor/**/.git
