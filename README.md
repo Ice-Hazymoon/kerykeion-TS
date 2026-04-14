@@ -3,10 +3,9 @@
 TypeScript port of `Astrologer-API` and `kerykeion`, with two primary entry points:
 
 - a reusable TypeScript library for natal charts, synastry, returns, reports, SVG charts, and moon phase calculations
-- a Hono-based HTTP API that mirrors the Python API surface
 - a source-built Swiss Ephemeris WASM runtime compiled from the vendored upstream C sources, so the package can run in browser and serverless JavaScript environments without Python or native addons
 
-The GitHub repository intentionally keeps vendored upstream snapshots under `vendor/` for auditability and parity work. The npm package excludes those vendor mirrors and ships the built `dist/` runtime plus the public Swiss Ephemeris data files.
+The GitHub repository also contains a Hono-based HTTP API used for local parity work, but the published npm package ships only the core library runtime. The repository intentionally keeps vendored upstream snapshots under `vendor/` for auditability and parity work. The npm package excludes both the vendor mirrors and the API server code, and ships only the built core runtime plus the public Swiss Ephemeris data files.
 
 ## Requirements
 
@@ -16,15 +15,17 @@ The GitHub repository intentionally keeps vendored upstream snapshots under `ven
 ## Install
 
 ```bash
-bun install
+bun add kerykeion-ts
 ```
+
+If you are working from this repository instead of the published package, use `bun install`.
 
 The packaged runtime does not require Python at runtime. Python is only used by the parity test suite that compares the Bun/TypeScript implementation against the upstream Python projects.
 
-## Common commands
+## Repository commands
 
 ```bash
-# start the API server
+# start the repository-local API server
 bun run dev
 
 # lint
@@ -57,7 +58,9 @@ bun run build
 
 The published package is Bun-first and ships ESM JavaScript plus `.d.ts` declarations from `dist/`.
 
-## Run the API locally
+## Repository-only API server
+
+The Hono API remains in this repository for local development and parity testing. It is not exported from the published `kerykeion-ts` npm package.
 
 ```bash
 bun run src/server.ts
@@ -153,19 +156,6 @@ const svg = drawer.generate_svg_string(false, false, {
 await Bun.write("./alan-turing-chart.svg", svg);
 ```
 
-### Embed the API app in another Bun service
-
-```ts
-import { createApp } from "kerykeion-ts";
-
-const app = createApp();
-
-Bun.serve({
-  port: 3000,
-  fetch: app.fetch,
-});
-```
-
 ### Browser or serverless usage
 
 The published package embeds the Swiss Ephemeris WASM/data bundle into a single generated ESM module. That means:
@@ -196,7 +186,7 @@ const subject = await AstrologicalSubjectFactory.fromBirthData({
 console.log(subject.sun.abs_pos);
 ```
 
-For serverless handlers, import `createApp()` and expose `app.fetch` from your runtime entry point.
+For serverless handlers, import the core factories directly and build your own handler around them.
 
 ## Upstream sync
 
@@ -232,7 +222,9 @@ bun run build
 bun run verify:full
 ```
 
-## HTTP API examples
+## Repository-only HTTP API examples
+
+These examples target the local Hono server from this repository. They are not part of the published npm surface.
 
 ### Build a subject
 
@@ -297,7 +289,7 @@ curl -X POST http://localhost:3000/api/v5/moon-phase/now-utc \
   }'
 ```
 
-## Main API routes
+## Repository-only API routes
 
 Common endpoints exposed by the local Hono server:
 
@@ -308,10 +300,6 @@ Common endpoints exposed by the local Hono server:
 - `POST /api/v5/chart-data/synastry`
 - `POST /api/v5/chart-data/composite`
 - `POST /api/v5/chart-data/transit`
-
-## License
-
-This project is distributed under `AGPL-3.0-only`, matching the upstream licensing constraints of `kerykeion`, `Astrologer-API`, and the AGPL distribution path of Swiss Ephemeris used here. The top-level [`LICENSE`](./LICENSE) file applies to this repository; vendored upstream source trees keep their original notices as well.
 - `POST /api/v5/chart-data/solar-return`
 - `POST /api/v5/chart-data/lunar-return`
 - `POST /api/v5/context/*`
@@ -325,3 +313,7 @@ This project is distributed under `AGPL-3.0-only`, matching the upstream licensi
 - For deterministic results, prefer explicit coordinates and timezone over GeoNames lookups.
 - The API and the TypeScript library share the same calculation core, so the returned chart data structures are aligned.
 - The test suite compares TypeScript results against the Python reference implementation and should stay green before publishing.
+
+## License
+
+This project is distributed under `AGPL-3.0-only`, matching the upstream licensing constraints of `kerykeion`, `Astrologer-API`, and the AGPL distribution path of Swiss Ephemeris used here. The top-level [`LICENSE`](./LICENSE) file applies to this repository; vendored upstream source trees keep their original notices as well.

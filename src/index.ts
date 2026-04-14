@@ -1,4 +1,3 @@
-export { createApp } from "./api/app";
 export { AspectsFactory } from "./core/aspects/aspects-factory";
 export { AstrologicalSubjectFactory } from "./core/astrological-subject-factory";
 export {
