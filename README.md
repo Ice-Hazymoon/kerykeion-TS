@@ -1,11 +1,8 @@
 # kerykeion-ts
 
-TypeScript port of `Astrologer-API` and `kerykeion`, with two primary entry points:
+TypeScript core port of `kerykeion`, with a source-built Swiss Ephemeris WASM runtime compiled from the vendored upstream C sources. The package is designed to run in browser and serverless JavaScript environments without Python or native addons.
 
-- a reusable TypeScript library for natal charts, synastry, returns, reports, SVG charts, and moon phase calculations
-- a source-built Swiss Ephemeris WASM runtime compiled from the vendored upstream C sources, so the package can run in browser and serverless JavaScript environments without Python or native addons
-
-The GitHub repository also contains a Hono-based HTTP API used for local parity work, but the published npm package ships only the core library runtime. The repository intentionally keeps vendored upstream snapshots under `vendor/` for auditability and parity work. The npm package excludes both the vendor mirrors and the API server code, and ships only the built core runtime plus the public Swiss Ephemeris data files.
+The repository keeps vendored upstream snapshots under `vendor/` for auditability and parity work. The published npm package ships only the built core runtime plus the public Swiss Ephemeris data files.
 
 ## Requirements
 
@@ -20,14 +17,11 @@ bun add kerykeion-ts
 
 If you are working from this repository instead of the published package, use `bun install`.
 
-The packaged runtime does not require Python at runtime. Python is only used by the parity test suite that compares the Bun/TypeScript implementation against the upstream Python projects.
+The packaged runtime does not require Python at runtime. Python is only used by the parity test suite that compares the Bun/TypeScript implementation against the upstream Python project.
 
 ## Repository commands
 
 ```bash
-# start the repository-local API server
-bun run dev
-
 # lint
 bun run lint
 
@@ -45,38 +39,22 @@ bun run verify
 
 # build the npm-ready dist/ output and regenerate generated assets
 bun run build
+
+# run the browser demo
+bun run demo:web
 ```
 
 ## Build output
 
-`bun run build` does four things:
+`bun run build` does five things:
 
 1. regenerates chart assets
 2. regenerates Swiss Ephemeris constants from vendored `libswe` headers
-3. rebuilds the single-file Swiss Ephemeris WASM runtime
-4. emits the publishable `dist/` package contents
+3. rebuilds the Swiss Ephemeris WASM runtime from vendored C sources
+4. bundles the publishable `dist/` package contents with Vite
+5. emits TypeScript declarations for the published package
 
-The published package is Bun-first and ships ESM JavaScript plus `.d.ts` declarations from `dist/`.
-
-## Repository-only API server
-
-The Hono API remains in this repository for local development and parity testing. It is not exported from the published `kerykeion-ts` npm package.
-
-```bash
-bun run src/server.ts
-```
-
-The default server URL is:
-
-```text
-http://localhost:3000
-```
-
-Quick health check:
-
-```bash
-curl http://localhost:3000/health
-```
+The published package ships ESM JavaScript plus `.d.ts` declarations from `dist/`. Bun remains the task runner for the repository, but package bundling now happens through Vite.
 
 ## TypeScript usage
 
@@ -110,7 +88,7 @@ const subject = await AstrologicalSubjectFactory.fromBirthData({
 
 const chartData = ChartDataFactory.createNatalChartData(subject);
 
-console.log(chartData.chart_type); // "Natal"
+console.log(chartData.chart_type);
 console.log(chartData.subject.sun.sign);
 console.log(new ReportGenerator(chartData).generate_report());
 ```
@@ -158,10 +136,10 @@ await Bun.write("./alan-turing-chart.svg", svg);
 
 ### Browser or serverless usage
 
-The published package embeds the Swiss Ephemeris WASM/data bundle into a single generated ESM module. That means:
+The published package ships the Swiss Ephemeris loader as ESM plus a standalone `.wasm` asset. That means:
 
 - no `python`, `pip`, or native `sweph` package is required at runtime
-- no dynamic filesystem access is required for the ephemeris core in browser/serverless deployments
+- the ephemeris core can be loaded in browser/serverless deployments through normal bundler asset handling
 - Node/Bun-only features such as writing SVG files or shelling out to `scour` stay behind runtime checks
 
 ```ts
@@ -190,7 +168,7 @@ For serverless handlers, import the core factories directly and build your own h
 
 ## Upstream sync
 
-The repository keeps a parity map and sync checklist in [`claude.md`](./claude.md). That file records:
+The repository keeps a parity map and sync checklist in [`CLAUDE.md`](./CLAUDE.md). That file records:
 
 - the exact upstream SHAs last audited
 - the mapping between local TypeScript modules and upstream Python/C files
@@ -222,98 +200,11 @@ bun run build
 bun run verify:full
 ```
 
-## Repository-only HTTP API examples
-
-These examples target the local Hono server from this repository. They are not part of the published npm surface.
-
-### Build a subject
-
-```bash
-curl -X POST http://localhost:3000/api/v5/subject \
-  -H 'content-type: application/json' \
-  -d '{
-    "subject": {
-      "name": "Ada Lovelace",
-      "year": 1815,
-      "month": 12,
-      "day": 10,
-      "hour": 13,
-      "minute": 45,
-      "second": 0,
-      "city": "London",
-      "nation": "GB",
-      "longitude": -0.1276,
-      "latitude": 51.5072,
-      "timezone": "Europe/London",
-      "zodiac_type": "Tropical",
-      "houses_system_identifier": "P",
-      "perspective_type": "Apparent Geocentric"
-    }
-  }'
-```
-
-### Get birth chart data
-
-```bash
-curl -X POST http://localhost:3000/api/v5/chart-data/birth-chart \
-  -H 'content-type: application/json' \
-  -d '{
-    "subject": {
-      "name": "Alan Turing",
-      "year": 1912,
-      "month": 6,
-      "day": 23,
-      "hour": 14,
-      "minute": 0,
-      "second": 0,
-      "city": "London",
-      "nation": "GB",
-      "longitude": -0.1276,
-      "latitude": 51.5072,
-      "timezone": "Europe/London",
-      "zodiac_type": "Tropical",
-      "houses_system_identifier": "P",
-      "perspective_type": "Apparent Geocentric"
-    }
-  }'
-```
-
-### Get current UTC moon phase
-
-```bash
-curl -X POST http://localhost:3000/api/v5/moon-phase/now-utc \
-  -H 'content-type: application/json' \
-  -d '{
-    "using_default_location": true,
-    "location_precision": 0
-  }'
-```
-
-## Repository-only API routes
-
-Common endpoints exposed by the local Hono server:
-
-- `GET /health`
-- `POST /api/v5/subject`
-- `POST /api/v5/now/subject`
-- `POST /api/v5/chart-data/birth-chart`
-- `POST /api/v5/chart-data/synastry`
-- `POST /api/v5/chart-data/composite`
-- `POST /api/v5/chart-data/transit`
-- `POST /api/v5/chart-data/solar-return`
-- `POST /api/v5/chart-data/lunar-return`
-- `POST /api/v5/context/*`
-- `POST /api/v5/moon-phase`
-- `POST /api/v5/moon-phase/context`
-- `POST /api/v5/moon-phase/now-utc`
-- `POST /api/v5/compatibility-score`
-
 ## Notes
 
 - For deterministic results, prefer explicit coordinates and timezone over GeoNames lookups.
-- The API and the TypeScript library share the same calculation core, so the returned chart data structures are aligned.
 - The test suite compares TypeScript results against the Python reference implementation and should stay green before publishing.
 
 ## License
 
-This project is distributed under `AGPL-3.0-only`, matching the upstream licensing constraints of `kerykeion`, `Astrologer-API`, and the AGPL distribution path of Swiss Ephemeris used here. The top-level [`LICENSE`](./LICENSE) file applies to this repository; vendored upstream source trees keep their original notices as well.
+This project is distributed under `AGPL-3.0-only`, matching the upstream licensing constraints of `kerykeion` and the AGPL distribution path of Swiss Ephemeris used here. The top-level [`LICENSE`](./LICENSE) file applies to this repository; vendored upstream source trees keep their original notices as well.

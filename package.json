@@ -1,9 +1,9 @@
 {
   "name": "kerykeion-ts",
   "type": "module",
-  "version": "5.12.7-ts.2",
+  "version": "5.12.7-ts.3",
   "packageManager": "bun@1.3.11",
-  "description": "Bun-first TypeScript core port of Astrologer-API and kerykeion with source-built Swiss Ephemeris WASM.",
+  "description": "TypeScript core port of kerykeion with source-built Swiss Ephemeris WASM.",
   "license": "AGPL-3.0-only",
   "keywords": [
     "astrology",
@@ -17,21 +17,28 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "browser": "./dist/browser.js",
+      "default": "./dist/index.js"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "default": "./dist/browser.js"
+    },
+    "./node": {
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
+  "browser": "./dist/browser.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "LICENSE",
     "README.md",
     "assets/sweph",
-    "dist/core",
-    "dist/generated",
-    "dist/index.d.ts",
-    "dist/index.js"
+    "dist"
   ],
   "engines": {
     "bun": ">=1.3.0"
@@ -44,19 +51,17 @@
     "build:chart-assets": "bun run scripts/generate-chart-assets.mjs",
     "build:sweph-constants": "bun run scripts/generate-sweph-constants.mjs",
     "build:sweph-wasm": "./scripts/build-sweph-wasm.sh",
-    "build:dist": "tsc -p tsconfig.build.json",
-    "build:dist-assets": "bun run scripts/copy-dist-assets.mjs",
-    "build": "bun run clean && bun run build:chart-assets && bun run build:sweph-constants && bun run build:sweph-wasm && bun run build:dist && bun run build:dist-assets",
-    "browser:check": "bun build ./src/index.ts --target browser --outdir .tmp/browser-build",
+    "build:js": "vite build",
+    "build:dist-runtime": "node ./scripts/fix-vite-dist-runtime.mjs",
+    "build:types": "tsc -p tsconfig.types.json",
+    "build": "bun run clean && bun run build:chart-assets && bun run build:sweph-constants && bun run build:sweph-wasm && bun run build:js && bun run build:dist-runtime && bun run build:types",
+    "browser:check": "node ./scripts/browser-check.mjs",
     "check:unused": "knip --include files,dependencies --no-progress",
-    "dev": "bun run src/server.ts",
     "demo:web": "bun run scripts/start-browser-demo.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "refresh:api-baselines": "bun run scripts/refresh-api-baselines.mjs",
     "refresh:report-fixtures": "bun run scripts/refresh-report-fixtures.mjs",
     "sync:vendors": "bun run scripts/sync-vendors.mjs",
-    "start": "bun run src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
@@ -65,8 +70,7 @@
     "prepublishOnly": "bun run build && bun run verify"
   },
   "dependencies": {
-    "@js-temporal/polyfill": "^0.5.1",
-    "zod": "^4.3.6"
+    "@js-temporal/polyfill": "^0.5.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^8.2.0",
@@ -74,9 +78,9 @@
     "@types/node": "^25.6.0",
     "@vitest/coverage-v8": "^4.1.4",
     "eslint": "^10.2.0",
-    "hono": "^4.12.12",
     "knip": "^6.4.1",
     "typescript": "^5.9.3",
+    "vite": "^8.0.8",
     "vitest": "^4.1.4"
   }
 }

@@ -1,6 +1,10 @@
 {
+  "entry": [
+    "src/index.ts",
+    "src/browser.ts"
+  ],
   "ignore": [
     "demo/browser/client.js",
-    "vendor/**"
+    "vendor/kerykeion/docs/search.js"
   ]
 }

@@ -1,10 +1,4 @@
 {
-  "Astrologer-API": {
-    "path": "vendor/Astrologer-API",
-    "ref": "HEAD",
-    "repo": "https://github.com/g-battaglia/Astrologer-API.git",
-    "resolved": "5fd411abbe1a0225dd8c45b53c5b0dd931e93cc0"
-  },
   "kerykeion": {
     "path": "vendor/kerykeion",
     "ref": "HEAD",

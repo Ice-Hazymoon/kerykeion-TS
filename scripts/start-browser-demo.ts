@@ -8,7 +8,7 @@ const outDir = path.join(rootDir, ".tmp", "browser-demo");
 
 async function buildBrowserLibrary(): Promise<void> {
   const result = await Bun.build({
-    entrypoints: [path.join(rootDir, "src", "index.ts")],
+    entrypoints: [path.join(rootDir, "src", "browser.ts")],
     outdir: outDir,
     target: "browser",
     format: "esm",

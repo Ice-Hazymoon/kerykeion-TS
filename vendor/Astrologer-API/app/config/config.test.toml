@@ -1,8 +1,0 @@
-admin_email = "test@example.com"
-debug = true
-docs_url = "/docs"
-redoc_url = "/redoc"
-log_level = 10
-secret_key_names = ["X-Test-Secret"]
-allowed_hosts = ['*']
-allowed_cors_origins = ['*']

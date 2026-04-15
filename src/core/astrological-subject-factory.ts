@@ -9,7 +9,6 @@ import type {
 import type { AstrologicalSubjectModel, KerykeionPointModel } from "./schemas/models";
 import { Temporal } from "@js-temporal/polyfill";
 import { FetchGeonames } from "./fetch-geonames";
-import { swephAssetsPath } from "./paths";
 import { readEnv } from "./runtime";
 import { KerykeionException } from "./schemas/kerykeion-exception";
 import { DEFAULT_ACTIVE_POINTS } from "./settings/config-constants";
@@ -133,7 +132,6 @@ function withEphemerisContext<T>(
   callback: (iflag: number) => T,
 ): T {
   const sweph = getSweph();
-  sweph.set_ephe_path(swephAssetsPath);
 
   let iflag = sweph.constants.SEFLG_SWIEPH | sweph.constants.SEFLG_SPEED;
   let topoUsed = false;

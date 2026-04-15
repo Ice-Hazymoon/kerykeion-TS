@@ -23,7 +23,6 @@ const requestedVendors = (readOption("--vendor") ?? "all")
   .filter(Boolean);
 
 const refOverrides = {
-  "Astrologer-API": readOption("--astrologer-api-ref"),
   "kerykeion": readOption("--kerykeion-ref"),
   "pyswisseph-source": readOption("--pyswisseph-ref"),
 };
@@ -62,7 +61,7 @@ function copySnapshot(sourceDir, destinationDir) {
 }
 
 function cloneSnapshot({ name, path: destinationPath, ref, repo }) {
-  const tempRoot = mkdtempSync(path.join(os.tmpdir(), "astrologer-vendor-"));
+  const tempRoot = mkdtempSync(path.join(os.tmpdir(), "kerykeion-vendor-"));
   const tempClone = path.join(tempRoot, name);
 
   runGit(["clone", "--depth", "1", repo, tempClone], rootDir);
@@ -106,7 +105,7 @@ for (const [name, vendorConfig] of Object.entries(config)) {
 }
 
 if (syncPlan.length === 0) {
-  throw new Error("No vendors selected. Use --vendor=all or a comma-separated list such as --vendor=kerykeion,Astrologer-API.");
+  throw new Error("No vendors selected. Use --vendor=all or a comma-separated list such as --vendor=kerykeion,pyswisseph-source.");
 }
 
 console.log(`Sync mode: ${dryRun ? "dry-run" : "apply"}`);

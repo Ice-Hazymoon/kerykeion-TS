@@ -1,13 +1,10 @@
 import { Temporal } from "@js-temporal/polyfill";
-import { swephAssetsPath } from "../paths";
 import { getSweph } from "../sweph";
 import { datetimeToJulian, julianToDatetime } from "../utilities";
 
 const AU_KM = 149597870.7;
 const STANDARD_ATMOSPHERIC_PRESSURE_HPA = 1013.25;
 const STANDARD_TEMPERATURE_CELSIUS = 15.0;
-
-let ephemerisConfigured = false;
 
 function getConstant(name: string, fallback = 0): number {
   const sweph = getSweph();
@@ -69,10 +66,6 @@ export function describeLunarEclipseType(retflag: number): string {
 
 function configureEphemerisPath(): number {
   const sweph = getSweph();
-  if (!ephemerisConfigured) {
-    sweph.set_ephe_path(swephAssetsPath);
-    ephemerisConfigured = true;
-  }
   return sweph.constants.SEFLG_SWIEPH;
 }
 

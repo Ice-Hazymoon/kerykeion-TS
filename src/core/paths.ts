@@ -3,7 +3,8 @@ function toPortablePath(url: URL): string {
   return /^\/[a-z]:/i.test(pathname) ? pathname.slice(1) : pathname;
 }
 
-const projectRootUrl = new URL("../..", import.meta.url);
+const projectRootRelativeUrl = ["..", ".."].join("/");
+const projectRootUrl = new URL(projectRootRelativeUrl, import.meta.url);
 const assetsRootUrl = new URL("assets/", projectRootUrl);
 
 export const projectRoot = toPortablePath(projectRootUrl);

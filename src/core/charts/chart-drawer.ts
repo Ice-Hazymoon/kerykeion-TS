@@ -18,7 +18,6 @@ import type { ChartAspectSetting, KerykeionSettingsCelestialPointModel } from ".
 import { chartTemplates, chartThemes } from "../../generated/chart-assets";
 import { HouseComparisonFactory } from "../house-comparison/house-comparison-factory";
 import { getOptionalNodeRuntime, requireNodeRuntime } from "../node-runtime";
-import { projectRoot } from "../paths";
 import { getDefaultOutputDirectory } from "../runtime";
 import { KerykeionException } from "../schemas/kerykeion-exception";
 import {
@@ -197,6 +196,12 @@ const SCOUR_MINIFY_CODE = [
 
 let cachedScourPython: string | null | undefined;
 
+function resolveProjectRootPath(): string {
+  const projectRootRelativeUrl = ["..", "..", ".."].join("/");
+  const pathname = decodeURIComponent(new URL(projectRootRelativeUrl, import.meta.url).pathname);
+  return /^\/[a-z]:/i.test(pathname) ? pathname.slice(1) : pathname;
+}
+
 function resolveScourPython(): string | null {
   if (cachedScourPython !== undefined) {
     return cachedScourPython;
@@ -209,7 +214,7 @@ function resolveScourPython(): string | null {
   }
 
   const candidates = [
-    nodeRuntime.path.join(projectRoot, ".venv-pyref", "bin", "python"),
+    nodeRuntime.path.join(resolveProjectRootPath(), ".venv-pyref", "bin", "python"),
     "python3",
     "python",
   ] as const;

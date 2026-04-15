@@ -5,7 +5,6 @@
 `kerykeion-ts` is a Bun-first TypeScript port of:
 
 - `g-battaglia/kerykeion`
-- `g-battaglia/Astrologer-API`
 - the Swiss Ephemeris C runtime used by `pyswisseph`
 
 The repository has two roles:
@@ -13,7 +12,7 @@ The repository has two roles:
 1. a publishable npm core library
 2. a parity workspace that keeps the TypeScript implementation aligned with the upstream Python and C sources
 
-The published npm package ships only the core runtime. The repository-local Hono API is kept for development, parity baselines, and local smoke testing.
+The published npm package ships only the core runtime.
 
 ## What This Repo Contains
 
@@ -21,10 +20,6 @@ The published npm package ships only the core runtime. The repository-local Hono
   - the actual TypeScript port of the astrology logic
 - `src/generated/*`
   - generated chart assets, generated Swiss Ephemeris constants, and generated Emscripten output
-- `src/api/*`
-  - repository-local API surface mirroring `Astrologer-API`
-- `src/server.ts`
-  - local Bun server entry point
 - `assets/sweph/*`
   - Swiss Ephemeris data files that are shipped with the package
 - `vendor/*`
@@ -55,13 +50,13 @@ It includes:
 - `dist/generated/*`
 - `dist/index.js`
 - `dist/index.d.ts`
+- `dist/browser.js`
 - `assets/sweph/*`
 
 It does **not** include:
 
-- `src/api/*`
-- `src/server.ts`
 - `vendor/*`
+- repository-only scripts or test fixtures
 
 ## Primary Commands
 
@@ -101,16 +96,16 @@ Run the full verification pipeline:
 bun run verify:full
 ```
 
-Start the repository-local API server:
-
-```bash
-bun run dev
-```
-
 Smoke-check browser bundling:
 
 ```bash
 bun run browser:check
+```
+
+Run the local browser demo:
+
+```bash
+bun run demo:web
 ```
 
 ## Architecture Notes

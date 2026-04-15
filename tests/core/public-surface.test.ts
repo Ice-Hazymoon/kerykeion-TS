@@ -227,7 +227,7 @@ describe("public compatibility surface", () => {
   it("supports legacy chart and aspect wrappers", async () => {
     const first = await makeSubject("Chart First", 1990, 6, 15, 10, 30, 12.4964, 41.9028, "Europe/Rome");
     const second = await makeSubject("Chart Second", 1992, 9, 20, 8, 45, -0.1276, 51.5072, "Europe/London");
-    const tempDir = mkdtempSync(path.join(tmpdir(), "astrologer-api-ts-"));
+    const tempDir = mkdtempSync(path.join(tmpdir(), "kerykeion-ts-"));
 
     try {
       const chart = new KerykeionChartSVG(first, "ExternalNatal", null, tempDir);
